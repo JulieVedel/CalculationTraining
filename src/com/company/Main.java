@@ -12,12 +12,14 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
 	Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("\nChoose one of the following: \n1. New test. \n2. Print summary. \n3. Exit.");
+            System.out.println("\nChoose one of the following: \n1. New test. \n2. Print summary. \n3. Exit. \n4. Check percentage.");
             int choice = scanner.nextInt();
             if (choice == 2) {
                 printSummary();
             } else if (choice == 3) {
                 System.exit(0);
+            } else if (choice == 4) {
+                checkPercent();
             } else if (choice == 1) {
                 System.out.println("Welcome to the calculation training. What would you like to train? \n1. Plus\n2. Minus");
                 int calcStyle = scanner.nextInt();
@@ -152,7 +154,7 @@ public class Main {
         int between50and75 = 0;
 
         while (out.hasNext()) {
-            String line = out.nextLine().toLowerCase().toString();
+            String line = out.nextLine().toLowerCase();
             if (line.contains("test")) {
                 test++;
             } else if (line.contains(("correct"))) {
@@ -196,5 +198,31 @@ public class Main {
 
     public static boolean between50and75(int check) {
         return check >= 5 && check < 8;
+    }
+
+    public static void checkPercent() throws FileNotFoundException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the name you want to check percentages for: ");
+        String name = scanner.nextLine().toLowerCase();
+        Scanner out = new Scanner(new File(name + ".txt"));
+        System.out.println("Enter the percentage you would like to check how many tests have more correct answers for.");
+        int percentage = scanner.nextInt();
+        int amount = 0;
+        int test = 0;
+
+        while(out.hasNext()) {
+            String line = out.nextLine().toLowerCase();
+            if (line.contains("correct")) {
+                String number = line.substring(line.length() - 2);
+                if (number.charAt(0) == ' ') {
+                    number = number.substring(1);
+                }
+                amount = Integer.parseInt(number);
+                if (amount * 10 >= percentage) {
+                    test++;
+                }
+            }
+        }
+        System.out.println("There is " + test + " tests that has " + percentage + "% or more correct answers.");
     }
 }
