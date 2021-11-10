@@ -99,7 +99,7 @@ public class Main {
                 System.out.println("That is correct!");
                 correctAnswers++;
             } else if (answer != number1 - number2) {
-                System.out.println("That is not correct. The answer is " + (number1 + number2));
+                System.out.println("That is not correct. The answer is " + (number1 - number2));
                 wrongAnswers++;
             }
         }
