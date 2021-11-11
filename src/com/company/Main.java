@@ -12,13 +12,13 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
 	Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("\nChoose one of the following: \n1. New test. \n2. Print summary. \n3. Exit. \n4. Check percentage.");
+            System.out.println("\nChoose one of the following: \n1. New test. \n2. Print summary. \n3. Check percentage. \n4. Exit.");
             int choice = scanner.nextInt();
             if (choice == 2) {
                 printSummary();
-            } else if (choice == 3) {
-                System.exit(0);
             } else if (choice == 4) {
+                System.exit(0);
+            } else if (choice == 3) {
                 checkPercent();
             } else if (choice == 1) {
                 System.out.println("Welcome to the calculation training. What would you like to train? \n1. Plus\n2. Minus");
@@ -26,87 +26,73 @@ public class Main {
                 System.out.println("What difficulty would you like to train? \n1. Easy\n2. Hard");
                 int difficulty = scanner.nextInt();
 
-                if (calcStyle == 1) {
-                    plus(difficulty);
-                } else if (calcStyle == 2) {
-                    minus(difficulty);
+                calculationTest(difficulty, calcStyle);
+            }
+        }
+    }
+
+    public static void calculationTest(int difficulty, int calcStyle) {
+        Random random = new Random();
+        Scanner scanner = new Scanner(System.in);
+        int correctAnswers = 0;
+        int wrongAnswers = 0;
+        int bound = 0;
+        String style = "";
+        char symbol = ' ';
+        String diff = "";
+
+        if (difficulty == 1) {
+            bound = 10;
+            diff = "Easy";
+        } else if (difficulty == 2) {
+            bound = 100;
+            diff = "Hard";
+        }
+
+        if (calcStyle == 1) {
+            symbol = '+';
+            style = "Plus";
+        } else if (calcStyle == 2) {
+            symbol = '-';
+            style = "Minus";
+        }
+
+        System.out.println("The test will now start.");
+        for (int i = 1; i <= 10; i++) {
+            int number1 = random.nextInt(bound);
+            int number2 = random.nextInt(bound);
+
+            if (number1 < number2) {
+                int swap = 0;
+                swap = number1;
+                number1 = number2;
+                number2 = swap;
+            }
+
+            System.out.println(i + ".     " + number1 + " " + symbol + " " + number2 + " = ");
+            int answer = scanner.nextInt();
+
+            if (style.equals("Plus")) {
+                if (answer == number1 + number2) {
+                    System.out.println("That is correct!");
+                    correctAnswers++;
+                } else if (answer != number1 + number2) {
+                    System.out.println("That is not correct. The answer is " + (number1 + number2));
+                    wrongAnswers++;
+                }
+            } else if (style.equals("Minus")) {
+                if (answer == number1 - number2) {
+                    System.out.println("That is correct!");
+                    correctAnswers++;
+                } else if (answer != number1 - number2) {
+                    System.out.println("That is not correct. The answer is " + (number1 + number2));
+                    wrongAnswers++;
                 }
             }
+
         }
-    }
-
-    public static void plus(int difficulty) {
-        Random random = new Random();
-        Scanner scanner = new Scanner(System.in);
-        int correctAnswers = 0;
-        int wrongAnswers = 0;
-        String plus = "Plus";
-        int bound = 0;
-        String diff = "";
-
-        if (difficulty == 1) {
-            bound = 10;
-            diff = "Easy";
-        } else if (difficulty == 2) {
-            bound = 100;
-            diff = "Hard";
-        }
-
-        System.out.println("The test will now start.");
-        for (int i = 1; i <= 10; i++) {
-            int number1 = random.nextInt(bound);
-            int number2 = random.nextInt(bound);
-
-            System.out.println(i + ".     " + number1 + " + " + number2 + " = ");
-            int answer = scanner.nextInt();
-
-            if (answer == number1 + number2) {
-                System.out.println("That is correct!");
-                correctAnswers++;
-            } else if (answer != number1 + number2) {
-                System.out.println("That is not correct. The answer is " + (number1 + number2));
-                wrongAnswers++;
-            }
-        }
-        statistics(correctAnswers, wrongAnswers, plus, diff);
-        saveToTxt(correctAnswers, plus, diff);
-    }
-
-    public static void minus(int difficulty) {
-        Random random = new Random();
-        Scanner scanner = new Scanner(System.in);
-        int correctAnswers = 0;
-        int wrongAnswers = 0;
-        int bound = 0;
-        String minus = "Minus";
-        String diff = "";
-
-        if (difficulty == 1) {
-            bound = 10;
-            diff = "Easy";
-        } else if (difficulty == 2) {
-            bound = 100;
-            diff = "Hard";
-        }
-
-        System.out.println("The test will now start.");
-        for (int i = 1; i <= 10; i++) {
-            int number1 = random.nextInt(bound);
-            int number2 = random.nextInt(bound);
-
-            System.out.println(i + ".     " + number1 + " - " + number2 + " = ");
-            int answer = scanner.nextInt();
-
-            if (answer == number1 - number2) {
-                System.out.println("That is correct!");
-                correctAnswers++;
-            } else if (answer != number1 - number2) {
-                System.out.println("That is not correct. The answer is " + (number1 - number2));
-                wrongAnswers++;
-            }
-        }
-        statistics(correctAnswers, wrongAnswers, minus, diff);
-        saveToTxt(correctAnswers, minus, diff);
+        statistics(correctAnswers, wrongAnswers, style, diff);
+        saveToTxt(correctAnswers, style, diff);
     }
 
     public static void statistics(int correct, int wrong, String style, String difficulty) {
@@ -207,7 +193,7 @@ public class Main {
         Scanner out = new Scanner(new File(name + ".txt"));
         System.out.println("Enter the percentage you would like to check how many tests have more correct answers for.");
         int percentage = scanner.nextInt();
-        int amount = 0;
+        int amount;
         int test = 0;
 
         while(out.hasNext()) {

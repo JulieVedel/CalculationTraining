@@ -28,3 +28,18 @@ Number of correct answers: 0
 Calculation style: Plus
 Difficulty: Hard
 
+Test: 2021-11-11 10:50:42.006144500
+Number of correct answers: 10
+Calculation style: Plus
+Difficulty: Easy
+
+Test: 2021-11-11 10:51:33.739401900
+Number of correct answers: 9
+Calculation style: Minus
+Difficulty: Easy
+
+Test: 2021-11-11 10:57:04.776638900
+Number of correct answers: 10
+Calculation style: Minus
+Difficulty: Easy
+
